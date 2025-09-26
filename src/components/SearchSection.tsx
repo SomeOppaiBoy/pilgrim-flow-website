@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
-import { Search, MapPin } from "lucide-react";
+import { Search, MapPin, Loader2 } from "lucide-react";
 import { temples } from "@/data/temples";
+import { useToast } from "@/hooks/use-toast";
 
 interface SearchSectionProps {
   onTempleSelect: (templeId: string) => void;
@@ -11,19 +12,36 @@ const SearchSection = ({ onTempleSelect }: SearchSectionProps) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState<typeof temples>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
+  const { toast } = useToast();
 
-  const handleSearch = (query: string) => {
+  const handleSearch = async (query: string) => {
     setSearchQuery(query);
     
     if (query.length > 1) {
+      setIsSearching(true);
+      
+      // Simulate search delay for better UX
+      await new Promise(resolve => setTimeout(resolve, 300));
+      
       const filtered = temples.filter(temple => 
         temple.name.toLowerCase().includes(query.toLowerCase()) ||
         temple.location.toLowerCase().includes(query.toLowerCase())
       );
       setSuggestions(filtered);
       setShowSuggestions(true);
+      setIsSearching(false);
+      
+      if (filtered.length === 0) {
+        toast({
+          title: "No temples found",
+          description: `No temples match "${query}". Try searching by city or temple name.`,
+          variant: "destructive",
+        });
+      }
     } else {
       setShowSuggestions(false);
+      setIsSearching(false);
     }
   };
 
@@ -32,7 +50,22 @@ const SearchSection = ({ onTempleSelect }: SearchSectionProps) => {
     if (temple) {
       setSearchQuery(temple.name);
       setShowSuggestions(false);
-      onTempleSelect(templeId);
+      
+      toast({
+        title: "Temple Selected",
+        description: `Loading information for ${temple.name}`,
+      });
+      
+      // Small delay for better UX
+      setTimeout(() => {
+        onTempleSelect(templeId);
+      }, 500);
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && suggestions.length > 0) {
+      handleTempleSelect(suggestions[0].id);
     }
   };
 
@@ -49,15 +82,22 @@ const SearchSection = ({ onTempleSelect }: SearchSectionProps) => {
 
       <div className="relative">
         <div className="relative">
-          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
+          <Search className={`absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 ${
+            isSearching ? 'text-primary' : 'text-muted-foreground'
+          }`} />
+          {isSearching && (
+            <Loader2 className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-primary animate-spin" />
+          )}
           <Input
             type="text"
             placeholder="Search for a temple or location..."
             value={searchQuery}
             onChange={(e) => handleSearch(e.target.value)}
-            className="pl-12 pr-4 py-6 text-lg border-2 border-border rounded-xl shadow-gentle 
-                     focus:border-primary focus:shadow-temple transition-all duration-300
-                     bg-white/90 backdrop-blur-sm"
+            onKeyPress={handleKeyPress}
+            className={`pl-12 pr-12 py-6 text-lg border-2 rounded-xl shadow-gentle 
+                     transition-all duration-300 bg-white/90 backdrop-blur-sm
+                     ${isSearching ? 'border-primary' : 'border-border'}
+                     focus:border-primary focus:shadow-temple`}
           />
         </div>
 

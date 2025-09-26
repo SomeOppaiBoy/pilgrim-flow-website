@@ -1,5 +1,6 @@
 import { temples } from "@/data/temples";
-import { MapPin, Clock, Users } from "lucide-react";
+import { MapPin, Clock, Users, ExternalLink } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface PopularTemplesProps {
   onTempleSelect: (templeId: string) => void;
@@ -7,6 +8,19 @@ interface PopularTemplesProps {
 
 const PopularTemples = ({ onTempleSelect }: PopularTemplesProps) => {
   const popularTemples = temples.slice(0, 6); // Show first 6 temples as popular
+  const { toast } = useToast();
+
+  const handleTempleClick = (templeId: string, templeName: string) => {
+    toast({
+      title: "Loading Temple",
+      description: `Getting live information for ${templeName}...`,
+    });
+    
+    // Add a small delay for better UX
+    setTimeout(() => {
+      onTempleSelect(templeId);
+    }, 600);
+  };
 
   return (
     <div className="w-full max-w-6xl mx-auto mt-16 animate-peaceful-enter" style={{ animationDelay: '0.3s' }}>
@@ -23,8 +37,8 @@ const PopularTemples = ({ onTempleSelect }: PopularTemplesProps) => {
         {popularTemples.map((temple) => (
           <div
             key={temple.id}
-            onClick={() => onTempleSelect(temple.id)}
-            className="temple-card cursor-pointer group overflow-hidden relative"
+            onClick={() => handleTempleClick(temple.id, temple.name)}
+            className="temple-card cursor-pointer group overflow-hidden relative hover:shadow-sacred"
           >
             <div className="lotus-pattern"></div>
             

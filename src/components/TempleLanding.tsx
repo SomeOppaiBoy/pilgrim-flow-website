@@ -1,5 +1,8 @@
+import { useState } from "react";
 import { temples } from "@/data/temples";
 import { Button } from "@/components/ui/button";
+import AdminLogin from "@/components/AdminLogin";
+import AdminDashboard from "@/components/AdminDashboard";
 import { 
   ArrowLeft, 
   MapPin, 
@@ -9,8 +12,11 @@ import {
   AlertCircle,
   Navigation,
   Eye,
-  Shield
+  Shield,
+  Bell,
+  ExternalLink
 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface TempleLandingProps {
   templeId: string;
@@ -19,6 +25,10 @@ interface TempleLandingProps {
 
 const TempleLanding = ({ templeId, onBack }: TempleLandingProps) => {
   const temple = temples.find(t => t.id === templeId);
+  const [showAdminLogin, setShowAdminLogin] = useState(false);
+  const [showAdminDashboard, setShowAdminDashboard] = useState(false);
+  const [notifications, setNotifications] = useState(false);
+  const { toast } = useToast();
 
   if (!temple) {
     return (
@@ -33,6 +43,81 @@ const TempleLanding = ({ templeId, onBack }: TempleLandingProps) => {
       </div>
     );
   }
+
+  // Show admin login if requested
+  if (showAdminLogin && !showAdminDashboard) {
+    return (
+      <AdminLogin
+        templeId={templeId}
+        templeName={temple.name}
+        onBack={() => setShowAdminLogin(false)}
+        onLoginSuccess={() => {
+          setShowAdminLogin(false);
+          setShowAdminDashboard(true);
+        }}
+      />
+    );
+  }
+
+  // Show admin dashboard if logged in
+  if (showAdminDashboard) {
+    return (
+      <AdminDashboard
+        templeId={templeId}
+        onLogout={() => {
+          setShowAdminDashboard(false);
+          toast({
+            title: "Logged Out",
+            description: "Successfully logged out of admin dashboard",
+          });
+        }}
+      />
+    );
+  }
+
+  // Interactive button handlers
+  const handleGetDirections = () => {
+    const address = encodeURIComponent(`${temple.name}, ${temple.location}`);
+    const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${address}`;
+    window.open(googleMapsUrl, '_blank');
+    
+    toast({
+      title: "Opening Directions",
+      description: "Redirecting to Google Maps for live navigation",
+    });
+  };
+
+  const handleViewOnMap = () => {
+    toast({
+      title: "Map View",
+      description: "Opening detailed temple location map",
+    });
+    // In a real app, this would open an interactive map component
+  };
+
+  const handleBookPooja = () => {
+    toast({
+      title: "Booking System",
+      description: "Special pooja booking will be available soon!",
+    });
+  };
+
+  const handleQueueNotifications = () => {
+    setNotifications(!notifications);
+    toast({
+      title: notifications ? "Notifications Disabled" : "Notifications Enabled",
+      description: notifications 
+        ? "You'll no longer receive queue updates" 
+        : "You'll receive updates when crowd reduces",
+    });
+  };
+
+  const handleSafetyGuidelines = () => {
+    toast({
+      title: "Safety Guidelines",
+      description: "Opening temple safety and conduct guidelines",
+    });
+  };
 
   const getCrowdColor = (status: string) => {
     switch (status) {
@@ -124,11 +209,18 @@ const TempleLanding = ({ templeId, onBack }: TempleLandingProps) => {
                 Directions & Navigation
               </h3>
               <div className="space-y-3">
-                <Button className="w-full sacred-button">
+                <Button 
+                  className="w-full sacred-button"
+                  onClick={handleGetDirections}
+                >
                   <Navigation className="w-4 h-4 mr-2" />
                   Get Live Directions
                 </Button>
-                <Button variant="outline" className="w-full">
+                <Button 
+                  variant="outline" 
+                  className="w-full"
+                  onClick={handleViewOnMap}
+                >
                   <Eye className="w-4 h-4 mr-2" />
                   View on Map
                 </Button>
@@ -206,15 +298,27 @@ const TempleLanding = ({ templeId, onBack }: TempleLandingProps) => {
               </h3>
               
               <div className="space-y-3">
-                <Button variant="outline" className="w-full">
+                <Button 
+                  variant="outline" 
+                  className="w-full"
+                  onClick={handleBookPooja}
+                >
                   <Calendar className="w-4 h-4 mr-2" />
                   Book Special Pooja
                 </Button>
-                <Button variant="outline" className="w-full">
-                  <Users className="w-4 h-4 mr-2" />
-                  Queue Notifications
+                <Button 
+                  variant="outline" 
+                  className="w-full"
+                  onClick={handleQueueNotifications}
+                >
+                  <Bell className="w-4 h-4 mr-2" />
+                  {notifications ? "Disable" : "Enable"} Queue Notifications
                 </Button>
-                <Button variant="outline" className="w-full">
+                <Button 
+                  variant="outline" 
+                  className="w-full"
+                  onClick={handleSafetyGuidelines}
+                >
                   <Shield className="w-4 h-4 mr-2" />
                   Safety Guidelines
                 </Button>
@@ -256,13 +360,14 @@ const TempleLanding = ({ templeId, onBack }: TempleLandingProps) => {
               <h3 className="font-display text-lg font-semibold text-foreground mb-3">
                 Temple Administration
               </h3>
-              <Button 
-                variant="outline" 
-                className="w-full text-secondary border-secondary hover:bg-secondary/10"
-              >
-                <Shield className="w-4 h-4 mr-2" />
-                Admin Login
-              </Button>
+                <Button 
+                  variant="outline" 
+                  className="w-full text-secondary border-secondary hover:bg-secondary/10"
+                  onClick={() => setShowAdminLogin(true)}
+                >
+                  <Shield className="w-4 h-4 mr-2" />
+                  Admin Login
+                </Button>
               <p className="text-xs text-muted-foreground mt-2 text-center">
                 For authorized temple staff only
               </p>
