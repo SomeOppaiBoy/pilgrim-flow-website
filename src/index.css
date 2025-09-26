@@ -1,42 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Sacred Temple Design System - All colors, gradients, fonts, and animations */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Sacred Color Palette */
+    --background: 42 25% 97%;           /* Warm temple marble */
+    --foreground: 25 15% 15%;           /* Deep earth brown */
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;                  /* Pure white for cards */
+    --card-foreground: 25 15% 15%;      
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 25 15% 15%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Sacred Saffron Primary */
+    --primary: 35 85% 55%;              /* Temple saffron */
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 38 90% 65%;         /* Lighter saffron glow */
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Temple Blue Secondary */
+    --secondary: 215 65% 45%;           /* Deep temple blue */
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Peaceful Neutrals */
+    --muted: 42 20% 94%;               /* Soft cream */
+    --muted-foreground: 25 10% 45%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 142 50% 88%;             /* Soft temple green */
+    --accent-foreground: 25 15% 15%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    /* Status Colors */
+    --success: 142 75% 35%;            /* Temple green for good status */
+    --warning: 38 95% 50%;             /* Golden warning */
+    --destructive: 0 75% 55%;          /* Gentle red for alerts */
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    /* UI Elements */
+    --border: 42 15% 88%;
+    --input: 42 15% 95%;
+    --ring: 35 85% 55%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
+
+    /* Sacred Gradients */
+    --gradient-temple: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+    --gradient-dawn: linear-gradient(180deg, hsl(38 90% 95%), hsl(42 25% 97%));
+    --gradient-peaceful: linear-gradient(135deg, hsl(var(--secondary) / 0.1), hsl(var(--accent) / 0.1));
+    
+    /* Elegant Shadows */
+    --shadow-temple: 0 10px 40px -10px hsl(var(--primary) / 0.15);
+    --shadow-sacred: 0 20px 60px -15px hsl(var(--primary) / 0.2);
+    --shadow-gentle: 0 4px 20px -4px hsl(25 15% 15% / 0.08);
+
+    /* Transitions */
+    --transition-temple: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --transition-sacred: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
 
     --sidebar-background: 0 0% 98%;
 
@@ -56,41 +79,51 @@ All colors MUST be HSL.
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    /* Sacred Dark Mode Palette */
+    --background: 25 15% 8%;              /* Deep temple stone */
+    --foreground: 42 25% 95%;             /* Warm temple light */
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 25 20% 12%;                   /* Dark temple marble */
+    --card-foreground: 42 25% 95%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 25 20% 12%;
+    --popover-foreground: 42 25% 95%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    /* Sacred Saffron remains vibrant in dark */
+    --primary: 35 85% 60%;                /* Bright saffron */
+    --primary-foreground: 25 15% 8%;
+    --primary-glow: 38 90% 70%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    /* Deep Temple Blue */
+    --secondary: 215 65% 55%;
+    --secondary-foreground: 42 25% 95%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    /* Dark Neutrals */
+    --muted: 25 10% 20%;
+    --muted-foreground: 42 15% 65%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 142 40% 25%;               /* Darker temple green */
+    --accent-foreground: 42 25% 95%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    /* Dark Status Colors */
+    --success: 142 60% 45%;
+    --warning: 38 85% 60%;
+    --destructive: 0 65% 60%;
+    --destructive-foreground: 42 25% 95%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --border: 25 15% 25%;
+    --input: 25 15% 25%;
+    --ring: 35 85% 60%;
+
+    /* Dark Gradients */
+    --gradient-temple: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+    --gradient-dawn: linear-gradient(180deg, hsl(25 20% 15%), hsl(25 15% 8%));
+    --gradient-peaceful: linear-gradient(135deg, hsl(var(--secondary) / 0.1), hsl(var(--accent) / 0.1));
+    
+    /* Enhanced shadows for dark mode */
+    --shadow-temple: 0 10px 40px -10px hsl(var(--primary) / 0.3);
+    --shadow-sacred: 0 20px 60px -15px hsl(var(--primary) / 0.4);
+    --shadow-gentle: 0 4px 20px -4px hsl(0 0% 0% / 0.3);
   }
 }
 
@@ -101,5 +134,122 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+  }
+}
+
+/* Sacred Temple Animations & Keyframes */
+@layer utilities {
+  /* Prayer Wheel Loading Animation */
+  @keyframes prayer-wheel {
+    0% { transform: rotate(0deg); opacity: 0.7; }
+    50% { opacity: 1; }
+    100% { transform: rotate(360deg); opacity: 0.7; }
+  }
+
+  /* Lotus Bloom Animation */
+  @keyframes lotus-bloom {
+    0% { 
+      transform: scale(0.9) rotate(-2deg);
+      opacity: 0.8;
+    }
+    50% { 
+      transform: scale(1.02) rotate(1deg);
+      opacity: 1;
+    }
+    100% { 
+      transform: scale(1) rotate(0deg);
+      opacity: 0.95;
+    }
+  }
+
+  /* Temple Bell Pulse */
+  @keyframes temple-pulse {
+    0%, 100% { 
+      transform: scale(1);
+      box-shadow: 0 0 0 0 hsl(var(--primary) / 0.4);
+    }
+    50% { 
+      transform: scale(1.02);
+      box-shadow: 0 0 0 8px hsl(var(--primary) / 0);
+    }
+  }
+
+  /* Peaceful Fade In */
+  @keyframes peaceful-enter {
+    0% {
+      opacity: 0;
+      transform: translateY(20px) scale(0.98);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  /* Sacred Glow Animation */
+  @keyframes sacred-glow {
+    0%, 100% {
+      filter: drop-shadow(0 0 8px hsl(var(--primary) / 0.2));
+    }
+    50% {
+      filter: drop-shadow(0 0 16px hsl(var(--primary) / 0.4));
+    }
+  }
+
+  /* Animation Classes */
+  .animate-prayer-wheel { animation: prayer-wheel 3s ease-in-out infinite; }
+  .animate-lotus-bloom { animation: lotus-bloom 2s ease-out; }
+  .animate-temple-pulse { animation: temple-pulse 2s ease-in-out infinite; }
+  .animate-peaceful-enter { animation: peaceful-enter 0.6s ease-out; }
+  .animate-sacred-glow { animation: sacred-glow 3s ease-in-out infinite; }
+
+  /* Gradient Utilities */
+  .bg-gradient-temple { background: var(--gradient-temple); }
+  .bg-gradient-dawn { background: var(--gradient-dawn); }
+  .bg-gradient-peaceful { background: var(--gradient-peaceful); }
+
+  /* Shadow Utilities */
+  .shadow-temple { box-shadow: var(--shadow-temple); }
+  .shadow-sacred { box-shadow: var(--shadow-sacred); }
+  .shadow-gentle { box-shadow: var(--shadow-gentle); }
+
+  /* Interactive Elements */
+  .temple-card {
+    @apply bg-card border border-border rounded-xl shadow-gentle transition-all duration-300;
+    @apply hover:shadow-temple hover:scale-[1.02] hover:-translate-y-1;
+  }
+
+  .sacred-button {
+    @apply bg-gradient-temple text-primary-foreground px-6 py-3 rounded-lg font-medium;
+    @apply hover:shadow-sacred hover:scale-105 transition-all duration-300;
+    @apply focus:outline-none focus:ring-2 focus:ring-ring;
+  }
+
+  .status-indicator {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium;
+    @apply transition-all duration-300;
+  }
+
+  .status-low { @apply bg-success/10 text-success; }
+  .status-moderate { @apply bg-warning/10 text-warning; }
+  .status-high { @apply bg-destructive/10 text-destructive; }
+
+  /* Cultural Pattern Overlay */
+  .lotus-pattern::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.03;
+    background-image: radial-gradient(circle at 50% 50%, currentColor 1px, transparent 1px);
+    background-size: 20px 20px;
+    pointer-events: none;
   }
 }
