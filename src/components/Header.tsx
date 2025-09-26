@@ -1,9 +1,7 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Globe } from "lucide-react";
-
 const Header = () => {
-  return (
-    <header className="w-full bg-gradient-dawn shadow-gentle relative">
+  return <header className="w-full bg-gradient-dawn shadow-gentle relative">
       <div className="lotus-pattern"></div>
       <div className="container mx-auto px-4 py-6 flex justify-between items-center relative z-10">
         <div className="flex items-center space-x-3">
@@ -11,9 +9,7 @@ const Header = () => {
             <span className="text-primary-foreground font-display font-bold text-lg">🕉</span>
           </div>
           <div>
-            <h1 className="font-display text-2xl font-bold text-foreground">
-              Sacred Journey
-            </h1>
+            <h1 className="font-display text-2xl font-bold text-foreground">Pilgrim Flow</h1>
             <p className="text-muted-foreground text-sm">Smart Temple Management</p>
           </div>
         </div>
@@ -35,8 +31,6 @@ const Header = () => {
           </Select>
         </div>
       </div>
-    </header>
-  );
+    </header>;
 };
-
 export default Header;
